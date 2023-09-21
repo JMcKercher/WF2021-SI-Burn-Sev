@@ -1,0 +1,32 @@
+
+# import ee
+# ee.Initialize()
+
+# vegetation indices
+def getNBR(image):
+    NBR = image.expression(
+        '(NIR - SWIR2) / (NIR + SWIR2)', {
+            'NIR': image.select("NIR"),
+            'SWIR2': image.select("SWIR2")})
+    return image.addBands(NBR.rename("NBR"))
+
+def getCSI(image):
+    CSI = image.expression(
+        'NIR / SWIR1', {
+            'NIR': image.select("NIR"),
+            'SWIR1': image.select("SWIR1")})
+    return image.addBands(CSI.rename("CSI"))
+
+def getRdNBR(image):
+    RdNBR = image.expression(
+      'sqrt(abs(NIR - SWIR2/1000))', {
+            'NIR': image.select("NIR"),
+            'SWIR2': image.select("SWIR2")})
+    return image.addBands(RdNBR.rename("RdNBR"))
+
+def getRBR(image):
+    RBR = image.expression(
+      '(NIR - SWIR2) + 1.001',{
+            'NIR': image.select("NIR"),
+            'SWIR2': image.select("SWIR2")})
+    return image.addBands(RBR.rename("RBR"))
